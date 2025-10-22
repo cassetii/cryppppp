@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entry Portfolio - Crypto Tracker Pro</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #9945FF 0%, #14F195 100%);
+            --success-gradient: linear-gradient(135deg, #14F195 0%, #00D4AA 100%);
+            --dark-bg: #000000;
+            --card-bg: #0B0B0F;
+            --border-color: #1A1A24;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: var(--card-bg);
+            border-bottom: 2px solid var(--border-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            border-left: 4px solid #9945FF;
+            color: #ffffff;
+        }
+
+        .card-header {
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 16px 16px 0 0 !important;
+            font-weight: 600;
+            padding: 1rem 1.5rem;
+        }
+
+        .form-control, .form-select {
+            background: #000000;
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+            border-radius: 10px;
+            padding: 0.75rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: #000000;
+            border-color: #9945FF;
+            color: #ffffff;
+            box-shadow: 0 0 0 0.25rem rgba(153, 69, 255, 0.25);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .text-muted {
+            color: #cccccc !important;
+        }
+
+        .btn-success {
+            background: var(--success-gradient);
+            border: none;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-success:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(20, 241, 149, 0.5);
+        }
+
+        .btn-outline-secondary {
+            border: 2px solid var(--border-color);
+            color: #ffffff;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+        }
+
+        .btn-outline-secondary:hover {
+            background: var(--border-color);
+            color: #ffffff;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-section {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .calc-preview {
+            background: rgba(20, 241, 149, 0.1);
+            border: 2px solid #14F195;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .calc-preview h6 {
+            color: #14F195;
+            margin-bottom: 1rem;
+        }
+
+        .calc-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .calc-item:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #14F195;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark navbar-expand-lg sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-currency-bitcoin"></i> Crypto Tracker Pro
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="bi bi-house"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="entry-whale.html">
+                            <i class="bi bi-water"></i> Entry Whale
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="entry-coin.html">
+                            <i class="bi bi-coin"></i> Entry Coin
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="portfolio.html">
+                            <i class="bi bi-wallet2"></i> Portfolio
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="form-section">
+            <h1 class="page-title text-center">
+                <i class="bi bi-wallet2"></i> Tambah Asset ke Portfolio
+            </h1>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-plus-circle"></i> Form Entry Portfolio
+                </div>
+                <div class="card-body p-4">
+                    <form id="portfolioForm">
+                        <!-- Coin Info -->
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">
+                                    <i class="bi bi-coin"></i> Nama Coin
+                                </label>
+                                <input type="text" class="form-control" id="coinName" placeholder="Bitcoin, Ethereum, n$TOKEN" required>
+                                <small class="text-muted">Nama coin yang Anda beli</small>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">
+                                    <i class="bi bi-link-45deg"></i> Blockchain
+                                </label>
+                                <select class="form-select" id="chain" required>
+                                    <option value="">Pilih Chain</option>
+                                    <option value="BSC">BSC (Binance Smart Chain)</option>
+                                    <option value="ETH">Ethereum (ETH)</option>
+                                    <option value="Solana">Solana (SOL)</option>
+                                    <option value="Base">Base</option>
+                                </select>
+                                <small class="text-muted">Blockchain tempat coin berada</small>
+                            </div>
+                        </div>
+
+                        <!-- Investment Details -->
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">
+                                    <i class="bi bi-cash-stack"></i> Jumlah Investment (USD)
+                                </label>
+                                <input type="number" step="0.01" class="form-control" id="investmentAmount" placeholder="100" required>
+                                <small class="text-muted">Berapa dollar yang Anda investasikan</small>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">
+                                    <i class="bi bi-currency-dollar"></i> Harga Beli per Coin
+                                </label>
+                                <input type="text" class="form-control" id="buyPrice" placeholder="0.0001235" required>
+                                <small class="text-muted">Harga per coin saat Anda beli</small>
+                            </div>
+                        </div>
+
+                        <!-- Calculated Amount -->
+                        <div class="mb-4">
+                            <label class="form-label">
+                                <i class="bi bi-calculator"></i> Jumlah Coin
+                            </label>
+                            <input type="text" class="form-control" id="coinAmount" placeholder="Auto calculate atau input manual" required>
+                            <small class="text-muted">Otomatis dihitung atau bisa input manual</small>
+                        </div>
+
+                        <!-- Current Price (Optional) -->
+                        <div class="mb-4">
+                            <label class="form-label">
+                                <i class="bi bi-graph-up"></i> Harga Sekarang (Opsional)
+                            </label>
+                            <input type="text" class="form-control" id="currentPrice" placeholder="0.0001620">
+                            <small class="text-muted">Update harga current untuk tracking P/L</small>
+                        </div>
+
+                        <!-- Contract (Optional) -->
+                        <div class="mb-4">
+                            <label class="form-label">
+                                <i class="bi bi-file-code"></i> Smart Contract (Opsional)
+                            </label>
+                            <input type="text" class="form-control" id="contract" placeholder="0x...">
+                            <small class="text-muted">Alamat contract untuk referensi</small>
+                        </div>
+
+                        <!-- Notes -->
+                        <div class="mb-4">
+                            <label class="form-label">
+                                <i class="bi bi-chat-left-text"></i> Catatan (Opsional)
+                            </label>
+                            <textarea class="form-control" id="notes" rows="3" placeholder="Strategi entry, target exit, stop loss, dll..."></textarea>
+                            <small class="text-muted">Catatan trading Anda</small>
+                        </div>
+
+                        <!-- Calculation Preview -->
+                        <div class="calc-preview" id="calcPreview" style="display: none;">
+                            <h6><i class="bi bi-calculator-fill"></i> Preview Perhitungan</h6>
+                            <div class="calc-item">
+                                <span>Investment:</span>
+                                <span id="previewInvestment">$0</span>
+                            </div>
+                            <div class="calc-item">
+                                <span>Buy Price:</span>
+                                <span id="previewBuyPrice">$0</span>
+                            </div>
+                            <div class="calc-item">
+                                <span>Coin Amount:</span>
+                                <span id="previewCoinAmount">0</span>
+                            </div>
+                            <div class="calc-item" id="currentSection" style="display: none;">
+                                <span>Current Price:</span>
+                                <span id="previewCurrentPrice">$0</span>
+                            </div>
+                            <div class="calc-item" id="valueSection" style="display: none;">
+                                <span>Current Value:</span>
+                                <span id="previewCurrentValue">$0</span>
+                            </div>
+                            <div class="calc-item" id="plSection" style="display: none;">
+                                <span>Profit/Loss:</span>
+                                <span id="previewPL">$0 (0%)</span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="portfolio.html" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-lg"></i> Batal
+                            </a>
+                            <button type="submit" class="btn btn-success" id="submitBtn">
+                                <i class="bi bi-check-lg"></i> Simpan ke Portfolio
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDb0XCzx13LR_lQ_W9zUGHdl4OCt5RmL0s",
+            authDomain: "cryptt-3f364.firebaseapp.com",
+            projectId: "cryptt-3f364",
+            storageBucket: "cryptt-3f364.firebasestorage.app",
+            messagingSenderId: "333311322801",
+            appId: "1:333311322801:web:7f02896dd29487a2fa5090",
+            measurementId: "G-KT5YB5E5PN"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Auto Calculate Coin Amount
+        function calculateCoinAmount() {
+            const investment = parseFloat(document.getElementById('investmentAmount').value) || 0;
+            const buyPrice = parseFloat(document.getElementById('buyPrice').value) || 0;
+            
+            if (investment > 0 && buyPrice > 0) {
+                const coinAmount = investment / buyPrice;
+                document.getElementById('coinAmount').value = coinAmount.toFixed(8);
+                updatePreview();
+            }
+        }
+
+        // Update Preview
+        function updatePreview() {
+            const investment = parseFloat(document.getElementById('investmentAmount').value) || 0;
+            const buyPrice = parseFloat(document.getElementById('buyPrice').value) || 0;
+            const coinAmount = parseFloat(document.getElementById('coinAmount').value) || 0;
+            const currentPrice = parseFloat(document.getElementById('currentPrice').value) || 0;
+            
+            if (investment > 0 && buyPrice > 0 && coinAmount > 0) {
+                document.getElementById('calcPreview').style.display = 'block';
+                document.getElementById('previewInvestment').textContent = `$${investment.toFixed(2)}`;
+                document.getElementById('previewBuyPrice').textContent = `$${buyPrice}`;
+                document.getElementById('previewCoinAmount').textContent = coinAmount.toLocaleString('en-US', { maximumFractionDigits: 8 });
+                
+                if (currentPrice > 0) {
+                    const currentValue = coinAmount * currentPrice;
+                    const pl = currentValue - investment;
+                    const plPercentage = (pl / investment) * 100;
+                    
+                    document.getElementById('currentSection').style.display = 'flex';
+                    document.getElementById('valueSection').style.display = 'flex';
+                    document.getElementById('plSection').style.display = 'flex';
+                    
+                    document.getElementById('previewCurrentPrice').textContent = `$${currentPrice}`;
+                    document.getElementById('previewCurrentValue').textContent = `$${currentValue.toFixed(2)}`;
+                    
+                    const plElement = document.getElementById('previewPL');
+                    plElement.textContent = `${pl >= 0 ? '+' : ''}$${pl.toFixed(2)} (${plPercentage.toFixed(2)}%)`;
+                    plElement.style.color = pl >= 0 ? '#14F195' : '#ff4757';
+                } else {
+                    document.getElementById('currentSection').style.display = 'none';
+                    document.getElementById('valueSection').style.display = 'none';
+                    document.getElementById('plSection').style.display = 'none';
+                }
+            } else {
+                document.getElementById('calcPreview').style.display = 'none';
+            }
+        }
+
+        // Event Listeners for Auto Calculate
+        document.getElementById('investmentAmount').addEventListener('input', calculateCoinAmount);
+        document.getElementById('buyPrice').addEventListener('input', calculateCoinAmount);
+        document.getElementById('coinAmount').addEventListener('input', updatePreview);
+        document.getElementById('currentPrice').addEventListener('input', updatePreview);
+
+        // Form Submission
+        document.getElementById('portfolioForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Menyimpan...';
+            
+            try {
+                const portfolio = {
+                    coinName: document.getElementById('coinName').value,
+                    chain: document.getElementById('chain').value,
+                    investmentAmount: document.getElementById('investmentAmount').value,
+                    buyPrice: document.getElementById('buyPrice').value,
+                    coinAmount: document.getElementById('coinAmount').value,
+                    currentPrice: document.getElementById('currentPrice').value || null,
+                    contract: document.getElementById('contract').value || null,
+                    notes: document.getElementById('notes').value || null,
+                    dateAdded: serverTimestamp()
+                };
+                
+                await addDoc(collection(db, 'portfolio'), portfolio);
+                
+                showAlert('success', 'Asset berhasil ditambahkan ke portfolio!');
+                
+                // Reset form
+                document.getElementById('portfolioForm').reset();
+                document.getElementById('calcPreview').style.display = 'none';
+                
+                // Redirect after 1.5 seconds
+                setTimeout(() => {
+                    window.location.href = 'portfolio.html';
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('danger', 'Gagal menyimpan: ' + error.message);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="bi bi-check-lg"></i> Simpan ke Portfolio';
+            }
+        });
+
+        // Show Alert
+        function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3`;
+            alertDiv.style.zIndex = '9999';
+            alertDiv.style.minWidth = '300px';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

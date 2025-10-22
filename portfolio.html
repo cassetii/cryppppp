@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Tracking - Crypto Tracker Pro</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #9945FF 0%, #14F195 100%);
+            --success-gradient: linear-gradient(135deg, #14F195 0%, #00D4AA 100%);
+            --danger-gradient: linear-gradient(135deg, #DC1FFF 0%, #9945FF 100%);
+            --dark-bg: #000000;
+            --card-bg: #0B0B0F;
+            --border-color: #1A1A24;
+            --accent-color: #9945FF;
+            --secondary-color: #14F195;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: var(--card-bg);
+            border-bottom: 2px solid var(--border-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: #ffffff;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(153, 69, 255, 0.4);
+        }
+
+        .card-header {
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 16px 16px 0 0 !important;
+            font-weight: 600;
+            padding: 1rem 1.5rem;
+        }
+
+        .stats-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stats-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stats-label {
+            color: #cccccc;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .portfolio-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .portfolio-item:hover {
+            border-color: #9945FF;
+            box-shadow: 0 4px 15px rgba(153, 69, 255, 0.3);
+        }
+
+        .portfolio-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .coin-info h5 {
+            color: #14F195;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .portfolio-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-box {
+            background: rgba(153, 69, 255, 0.1);
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-box label {
+            font-size: 0.75rem;
+            color: #cccccc;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-box .value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .profit {
+            color: #14F195 !important;
+        }
+
+        .loss {
+            color: #ff4757 !important;
+        }
+
+        .badge-bsc {
+            background: linear-gradient(135deg, #f3ba2f 0%, #f0b90b 100%);
+            color: #000;
+        }
+
+        .badge-eth {
+            background: linear-gradient(135deg, #627eea 0%, #8c9eff 100%);
+        }
+
+        .badge-solana {
+            background: linear-gradient(135deg, #00d4aa 0%, #14f195 100%);
+            color: #000;
+        }
+
+        .badge-base {
+            background: linear-gradient(135deg, #0052ff 0%, #0066ff 100%);
+        }
+
+        .badge {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .action-buttons .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            margin: 0 0.25rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            border: none;
+            font-weight: 600;
+        }
+
+        .btn-success {
+            background: var(--success-gradient);
+            border: none;
+            font-weight: 600;
+        }
+
+        .btn-danger {
+            background: var(--danger-gradient);
+            border: none;
+            font-weight: 600;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .filter-section {
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .form-select {
+            background: #000000;
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+            border-radius: 10px;
+        }
+
+        .summary-box {
+            background: rgba(20, 241, 149, 0.1);
+            border: 2px solid #14F195;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-box h4 {
+            color: #14F195;
+            margin-bottom: 1rem;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner-border {
+            color: #9945FF;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark navbar-expand-lg sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-currency-bitcoin"></i> Crypto Tracker Pro
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="bi bi-house"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="entry-whale.html">
+                            <i class="bi bi-water"></i> Entry Whale
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="entry-coin.html">
+                            <i class="bi bi-coin"></i> Entry Coin
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="portfolio.html">
+                            <i class="bi bi-wallet2"></i> Portfolio
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid py-4">
+        <!-- Page Title -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 style="background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                <i class="bi bi-wallet2"></i> Portfolio Tracker
+            </h2>
+            <a href="entry-portfolio.html" class="btn btn-success">
+                <i class="bi bi-plus-lg"></i> Tambah Asset
+            </a>
+        </div>
+
+        <!-- Summary Box -->
+        <div class="summary-box" id="summaryBox">
+            <h4><i class="bi bi-graph-up"></i> Portfolio Summary</h4>
+            <div class="summary-grid">
+                <div class="stat-box">
+                    <label>💰 Total Investment</label>
+                    <div class="value" id="totalInvestment">$0</div>
+                </div>
+                <div class="stat-box">
+                    <label>💵 Current Value</label>
+                    <div class="value" id="currentValue">$0</div>
+                </div>
+                <div class="stat-box">
+                    <label>📈 Total P/L</label>
+                    <div class="value" id="totalPL">$0 (0%)</div>
+                </div>
+                <div class="stat-box">
+                    <label>🎯 Best Performer</label>
+                    <div class="value" id="bestPerformer">-</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="stats-card">
+                    <i class="bi bi-wallet2" style="font-size: 2rem; color: #9945FF;"></i>
+                    <div class="stats-number" id="totalAssets">0</div>
+                    <div class="stats-label">Total Assets</div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stats-card">
+                    <i class="bi bi-link-45deg" style="font-size: 2rem; color: #f3ba2f;"></i>
+                    <div class="stats-number" id="bscAssets">0</div>
+                    <div class="stats-label">BSC Assets</div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stats-card">
+                    <i class="bi bi-currency-ethereum" style="font-size: 2rem; color: #627eea;"></i>
+                    <div class="stats-number" id="ethAssets">0</div>
+                    <div class="stats-label">ETH Assets</div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stats-card">
+                    <i class="bi bi-lightning-charge" style="font-size: 2rem; color: #14F195;"></i>
+                    <div class="stats-number" id="solAssets">0</div>
+                    <div class="stats-label">SOL Assets</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <label class="form-label mb-2">Filter by Blockchain</label>
+                    <select class="form-select" id="filterChain">
+                        <option value="">Semua Chain</option>
+                        <option value="BSC">BSC</option>
+                        <option value="ETH">Ethereum</option>
+                        <option value="Solana">Solana</option>
+                        <option value="Base">Base</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label mb-2">Sort by</label>
+                    <select class="form-select" id="sortBy">
+                        <option value="date">Tanggal</option>
+                        <option value="value">Nilai Tertinggi</option>
+                        <option value="pl">P/L Tertinggi</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Portfolio List -->
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-list-ul"></i> Your Portfolio
+            </div>
+            <div class="card-body">
+                <div id="portfolioList">
+                    <div class="loading">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2">Memuat portfolio...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, getDocs, deleteDoc, doc, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDb0XCzx13LR_lQ_W9zUGHdl4OCt5RmL0s",
+            authDomain: "cryptt-3f364.firebaseapp.com",
+            projectId: "cryptt-3f364",
+            storageBucket: "cryptt-3f364.firebasestorage.app",
+            messagingSenderId: "333311322801",
+            appId: "1:333311322801:web:7f02896dd29487a2fa5090",
+            measurementId: "G-KT5YB5E5PN"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let portfolio = [];
+
+        // Load Data
+        async function loadPortfolio() {
+            try {
+                const portfolioQuery = query(collection(db, 'portfolio'), orderBy('dateAdded', 'desc'));
+                const portfolioSnapshot = await getDocs(portfolioQuery);
+                portfolio = portfolioSnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                renderPortfolio();
+                updateStats();
+                updateSummary();
+            } catch (error) {
+                console.error('Error loading portfolio:', error);
+                showAlert('danger', 'Gagal memuat portfolio: ' + error.message);
+            }
+        }
+
+        // Render Portfolio
+        function renderPortfolio() {
+            const container = document.getElementById('portfolioList');
+            const filterChain = document.getElementById('filterChain').value;
+            const sortBy = document.getElementById('sortBy').value;
+            
+            let filteredPortfolio = [...portfolio];
+            
+            // Filter
+            if (filterChain) {
+                filteredPortfolio = filteredPortfolio.filter(item => item.chain === filterChain);
+            }
+            
+            // Sort
+            if (sortBy === 'value') {
+                filteredPortfolio.sort((a, b) => (b.currentValue || 0) - (a.currentValue || 0));
+            } else if (sortBy === 'pl') {
+                filteredPortfolio.sort((a, b) => {
+                    const plA = calculatePL(a);
+                    const plB = calculatePL(b);
+                    return plB.amount - plA.amount;
+                });
+            }
+            
+            if (filteredPortfolio.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="bi bi-wallet2"></i>
+                        <p>Belum ada asset dalam portfolio</p>
+                        <a href="entry-portfolio.html" class="btn btn-success mt-3">
+                            <i class="bi bi-plus-lg"></i> Tambah Asset
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = filteredPortfolio.map(item => {
+                const pl = calculatePL(item);
+                return `
+                    <div class="portfolio-item">
+                        <div class="portfolio-header">
+                            <div class="coin-info">
+                                <h5><i class="bi bi-coin"></i> ${item.coinName}</h5>
+                                <span class="badge badge-${item.chain.toLowerCase()}">${item.chain}</span>
+                            </div>
+                            <div class="action-buttons">
+                                <button class="btn btn-sm btn-primary" onclick="editPortfolio('${item.id}')">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="deletePortfolio('${item.id}')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="portfolio-stats">
+                            <div class="stat-box">
+                                <label>💵 Investment</label>
+                                <div class="value">$${parseFloat(item.investmentAmount).toFixed(2)}</div>
+                            </div>
+                            <div class="stat-box">
+                                <label>🪙 Amount</label>
+                                <div class="value">${formatNumber(item.coinAmount)}</div>
+                            </div>
+                            <div class="stat-box">
+                                <label>💰 Buy Price</label>
+                                <div class="value">$${item.buyPrice}</div>
+                            </div>
+                            ${item.currentPrice ? `
+                            <div class="stat-box">
+                                <label>📊 Current Price</label>
+                                <div class="value">$${item.currentPrice}</div>
+                            </div>
+                            <div class="stat-box">
+                                <label>💎 Current Value</label>
+                                <div class="value">$${pl.currentValue.toFixed(2)}</div>
+                            </div>
+                            <div class="stat-box">
+                                <label>📈 Profit/Loss</label>
+                                <div class="value ${pl.amount >= 0 ? 'profit' : 'loss'}">
+                                    ${pl.amount >= 0 ? '+' : ''}$${pl.amount.toFixed(2)} (${pl.percentage.toFixed(2)}%)
+                                </div>
+                            </div>
+                            ` : ''}
+                        </div>
+                        
+                        ${item.notes ? `
+                        <div class="mt-3 pt-3" style="border-top: 1px solid var(--border-color);">
+                            <small class="text-muted"><i class="bi bi-chat-left-text"></i> ${item.notes}</small>
+                        </div>
+                        ` : ''}
+                        
+                        <div class="mt-2 pt-2" style="border-top: 1px solid var(--border-color);">
+                            <small class="text-muted">
+                                <i class="bi bi-calendar"></i> ${new Date(item.dateAdded).toLocaleDateString('id-ID')}
+                            </small>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Calculate P/L
+        function calculatePL(item) {
+            const currentPrice = parseFloat(item.currentPrice) || parseFloat(item.buyPrice);
+            const currentValue = parseFloat(item.coinAmount) * currentPrice;
+            const investment = parseFloat(item.investmentAmount);
+            const plAmount = currentValue - investment;
+            const plPercentage = (plAmount / investment) * 100;
+            
+            return {
+                currentValue,
+                amount: plAmount,
+                percentage: plPercentage
+            };
+        }
+
+        // Update Stats
+        function updateStats() {
+            document.getElementById('totalAssets').textContent = portfolio.length;
+            document.getElementById('bscAssets').textContent = portfolio.filter(p => p.chain === 'BSC').length;
+            document.getElementById('ethAssets').textContent = portfolio.filter(p => p.chain === 'ETH').length;
+            document.getElementById('solAssets').textContent = portfolio.filter(p => p.chain === 'Solana').length;
+        }
+
+        // Update Summary
+        function updateSummary() {
+            const totalInvestment = portfolio.reduce((sum, item) => sum + parseFloat(item.investmentAmount), 0);
+            let totalCurrentValue = 0;
+            let bestPerformer = null;
+            let bestPL = -Infinity;
+
+            portfolio.forEach(item => {
+                const pl = calculatePL(item);
+                totalCurrentValue += pl.currentValue;
+                
+                if (pl.percentage > bestPL) {
+                    bestPL = pl.percentage;
+                    bestPerformer = item;
+                }
+            });
+
+            const totalPL = totalCurrentValue - totalInvestment;
+            const totalPLPercentage = totalInvestment > 0 ? (totalPL / totalInvestment) * 100 : 0;
+
+            document.getElementById('totalInvestment').textContent = `$${totalInvestment.toFixed(2)}`;
+            document.getElementById('currentValue').textContent = `$${totalCurrentValue.toFixed(2)}`;
+            
+            const plElement = document.getElementById('totalPL');
+            plElement.textContent = `${totalPL >= 0 ? '+' : ''}$${totalPL.toFixed(2)} (${totalPLPercentage.toFixed(2)}%)`;
+            plElement.className = `value ${totalPL >= 0 ? 'profit' : 'loss'}`;
+            
+            document.getElementById('bestPerformer').textContent = bestPerformer ? 
+                `${bestPerformer.coinName} (+${bestPL.toFixed(2)}%)` : '-';
+        }
+
+        // Delete Portfolio
+        window.deletePortfolio = async function(id) {
+            if (confirm('Yakin ingin menghapus asset ini dari portfolio?')) {
+                try {
+                    await deleteDoc(doc(db, 'portfolio', id));
+                    showAlert('success', 'Asset berhasil dihapus');
+                    loadPortfolio();
+                } catch (error) {
+                    showAlert('danger', 'Gagal menghapus: ' + error.message);
+                }
+            }
+        }
+
+        // Edit Portfolio (redirect)
+        window.editPortfolio = function(id) {
+            window.location.href = `entry-portfolio.html?id=${id}`;
+        }
+
+        // Format Number
+        function formatNumber(num) {
+            return parseFloat(num).toLocaleString('en-US', {
+                maximumFractionDigits: 8
+            });
+        }
+
+        // Show Alert
+        function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3`;
+            alertDiv.style.zIndex = '9999';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 3000);
+        }
+
+        // Event Listeners
+        document.getElementById('filterChain').addEventListener('change', renderPortfolio);
+        document.getElementById('sortBy').addEventListener('change', renderPortfolio);
+
+        // Initialize
+        loadPortfolio();
+    </script>
+</body>
+</html>
