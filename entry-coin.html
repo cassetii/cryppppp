@@ -240,6 +240,62 @@
                             <small class="text-muted">Dokumentasi analisis dan strategi trading Anda</small>
                         </div>
 
+                        <!-- Stats Section (Optional) -->
+                        <div class="card mb-4" style="background: rgba(153, 69, 255, 0.05); border: 1px solid var(--border-color);">
+                            <div class="card-body">
+                                <h6 class="mb-3" style="color: #9945FF;">
+                                    <i class="bi bi-bar-chart-fill"></i> Stats Token (Opsional)
+                                </h6>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">💵 Price (USD)</label>
+                                        <input type="text" class="form-control" id="coinPrice" placeholder="0.0001235">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">📈 Price Change (%)</label>
+                                        <input type="text" class="form-control" id="coinPriceChange" placeholder="+31">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">💰 Market Cap</label>
+                                        <input type="text" class="form-control" id="coinMarketCap" placeholder="123.6K">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">📊 Volume (24h)</label>
+                                        <input type="text" class="form-control" id="coinVolume" placeholder="653.3K">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">💧 Liquidity Pool</label>
+                                        <input type="text" class="form-control" id="coinLiquidity" placeholder="22.2K">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">🔢 Supply</label>
+                                        <input type="text" class="form-control" id="coinSupply" placeholder="1B/1B">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">👥 Holders</label>
+                                        <input type="text" class="form-control" id="coinHolders" placeholder="1K">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">⭐ All Time High</label>
+                                        <input type="text" class="form-control" id="coinATH" placeholder="531.6K">
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label">📉 ATH Change</label>
+                                        <input type="text" class="form-control" id="coinATHChange" placeholder="-77% / 16m">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label">🕐 Token Age</label>
+                                        <input type="text" class="form-control" id="coinAge" placeholder="2h">
+                                    </div>
+                                </div>
+                                
+                                <small class="text-muted">
+                                    <i class="bi bi-info-circle"></i> Isi stats ini jika Anda ingin tracking detail performa token
+                                </small>
+                            </div>
+                        </div>
+
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <a href="index.html" class="btn btn-outline-secondary">
                                 <i class="bi bi-x-lg"></i> Batal
@@ -298,14 +354,42 @@
             submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Menyimpan...';
             
             try {
+                // Build stats object if any stat field is filled
+                const stats = {};
+                const price = document.getElementById('coinPrice').value;
+                const priceChange = document.getElementById('coinPriceChange').value;
+                const marketCap = document.getElementById('coinMarketCap').value;
+                const volume = document.getElementById('coinVolume').value;
+                const liquidity = document.getElementById('coinLiquidity').value;
+                const supply = document.getElementById('coinSupply').value;
+                const holders = document.getElementById('coinHolders').value;
+                const ath = document.getElementById('coinATH').value;
+                const athChange = document.getElementById('coinATHChange').value;
+                
+                if (price) stats.price = price;
+                if (priceChange) stats.priceChange = parseFloat(priceChange);
+                if (marketCap) stats.marketCap = marketCap;
+                if (volume) stats.volume = volume;
+                if (liquidity) stats.liquidity = liquidity;
+                if (supply) stats.supply = supply;
+                if (holders) stats.holders = holders;
+                if (ath) stats.ath = ath;
+                if (athChange) stats.athChange = athChange;
+                
                 const coin = {
                     name: document.getElementById('coinName').value,
                     contract: document.getElementById('coinContract').value,
                     chain: document.getElementById('coinChain').value,
                     potential: document.getElementById('coinPotential').value,
                     notes: document.getElementById('coinNotes').value,
+                    age: document.getElementById('coinAge').value,
                     dateAdded: serverTimestamp()
                 };
+                
+                // Only add stats if it has properties
+                if (Object.keys(stats).length > 0) {
+                    coin.stats = stats;
+                }
                 
                 await addDoc(collection(db, 'coins'), coin);
                 
