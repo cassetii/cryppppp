@@ -186,6 +186,70 @@
             color: #14F195;
         }
 
+        .coin-detail-card {
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .coin-detail-card:hover {
+            border-color: #9945FF;
+            box-shadow: 0 4px 20px rgba(153, 69, 255, 0.3);
+        }
+
+        .contract-address-section {
+            background: rgba(153, 69, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid #9945FF;
+        }
+
+        .coin-stats {
+            background: rgba(20, 241, 149, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid #14F195;
+        }
+
+        .stats-header {
+            color: #14F195;
+            font-size: 0.95rem;
+        }
+
+        .stat-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-label {
+            color: #cccccc;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-value {
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .notes-section {
+            background: rgba(20, 241, 149, 0.03);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid #14F195;
+        }
+
+        .notes-text {
+            color: #ffffff;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
         .nav-tabs {
             border-bottom: 2px solid var(--border-color);
         }
@@ -519,25 +583,17 @@
             }
             
             container.innerHTML = filteredCoins.map(coin => `
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <h5 class="card-title mb-0 coin-name">
-                                <i class="bi bi-coin"></i> ${coin.name}
-                            </h5>
+                <div class="card mb-3 coin-detail-card">
+                    <div class="card-body p-4">
+                        <!-- Header Section -->
+                        <div class="d-flex justify-content-between align-items-start mb-3">
                             <div>
-                                <span class="badge badge-${coin.chain.toLowerCase()} me-1">${coin.chain}</span>
+                                <h4 class="coin-name mb-1">
+                                    <i class="bi bi-coin"></i> ${coin.name}
+                                </h4>
+                                <span class="badge badge-${coin.chain.toLowerCase()} me-2">#${coin.chain}</span>
                                 <span class="badge bg-info">${coin.potential}</span>
                             </div>
-                        </div>
-                        <div class="contract-address mb-2">
-                            <small><i class="bi bi-file-code"></i> ${coin.contract}</small>
-                        </div>
-                        ${coin.notes ? `<p class="text-muted mb-2"><small>${coin.notes}</small></p>` : ''}
-                        <div class="d-flex justify-content-between align-items-center">
-                            <small class="text-muted">
-                                <i class="bi bi-calendar"></i> ${new Date(coin.dateAdded).toLocaleDateString('id-ID')}
-                            </small>
                             <div class="action-buttons">
                                 <button class="btn btn-sm btn-primary" onclick="copyToClipboard('${coin.contract}')">
                                     <i class="bi bi-clipboard"></i>
@@ -546,6 +602,104 @@
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </div>
+                        </div>
+
+                        <!-- Contract Address -->
+                        <div class="contract-address-section mb-3">
+                            <small class="text-muted d-block mb-1">📝 Smart Contract</small>
+                            <div class="contract-address">
+                                ${coin.contract}
+                            </div>
+                        </div>
+
+                        <!-- Stats Section -->
+                        ${coin.stats ? `
+                        <div class="coin-stats mb-3">
+                            <div class="stats-header mb-2">
+                                <i class="bi bi-bar-chart-fill"></i> <strong>Stats</strong>
+                            </div>
+                            <div class="row g-2">
+                                ${coin.stats.price ? `
+                                <div class="col-6 col-md-3">
+                                    <div class="stat-item">
+                                        <small class="stat-label">USD</small>
+                                        <div class="stat-value ${coin.stats.priceChange >= 0 ? 'text-success' : 'text-danger'}">
+                                            $${coin.stats.price}
+                                            ${coin.stats.priceChange ? `<span class="ms-1">(${coin.stats.priceChange > 0 ? '+' : ''}${coin.stats.priceChange}%)</span>` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                                ` : ''}
+                                ${coin.stats.marketCap ? `
+                                <div class="col-6 col-md-3">
+                                    <div class="stat-item">
+                                        <small class="stat-label">MC</small>
+                                        <div class="stat-value">$${coin.stats.marketCap}</div>
+                                    </div>
+                                </div>
+                                ` : ''}
+                                ${coin.stats.volume ? `
+                                <div class="col-6 col-md-3">
+                                    <div class="stat-item">
+                                        <small class="stat-label">Vol</small>
+                                        <div class="stat-value">$${coin.stats.volume}</div>
+                                    </div>
+                                </div>
+                                ` : ''}
+                                ${coin.stats.liquidity ? `
+                                <div class="col-6 col-md-3">
+                                    <div class="stat-item">
+                                        <small class="stat-label">LP</small>
+                                        <div class="stat-value">$${coin.stats.liquidity}</div>
+                                    </div>
+                                </div>
+                                ` : ''}
+                                ${coin.stats.supply ? `
+                                <div class="col-6 col-md-3">
+                                    <div class="stat-item">
+                                        <small class="stat-label">Sup</small>
+                                        <div class="stat-value">${coin.stats.supply}</div>
+                                    </div>
+                                </div>
+                                ` : ''}
+                                ${coin.stats.holders ? `
+                                <div class="col-6 col-md-3">
+                                    <div class="stat-item">
+                                        <small class="stat-label">Holders</small>
+                                        <div class="stat-value"><i class="bi bi-people"></i> ${coin.stats.holders}</div>
+                                    </div>
+                                </div>
+                                ` : ''}
+                                ${coin.stats.ath ? `
+                                <div class="col-12 col-md-6">
+                                    <div class="stat-item">
+                                        <small class="stat-label">ATH</small>
+                                        <div class="stat-value text-warning">$${coin.stats.ath} <small class="text-muted">(${coin.stats.athChange})</small></div>
+                                    </div>
+                                </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                        ` : ''}
+
+                        <!-- Notes Section -->
+                        ${coin.notes ? `
+                        <div class="notes-section mb-3">
+                            <small class="text-muted d-block mb-1"><i class="bi bi-chat-left-text"></i> Catatan</small>
+                            <p class="mb-0 notes-text">${coin.notes}</p>
+                        </div>
+                        ` : ''}
+
+                        <!-- Footer -->
+                        <div class="d-flex justify-content-between align-items-center pt-2 border-top" style="border-color: var(--border-color) !important;">
+                            <small class="text-muted">
+                                <i class="bi bi-calendar"></i> ${new Date(coin.dateAdded).toLocaleDateString('id-ID')}
+                            </small>
+                            ${coin.age ? `
+                            <small class="text-muted">
+                                <i class="bi bi-clock"></i> ${coin.age}
+                            </small>
+                            ` : ''}
                         </div>
                     </div>
                 </div>
