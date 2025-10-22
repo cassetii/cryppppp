@@ -13,16 +13,16 @@
     
     <style>
         :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-            --dark-bg: #1a1d29;
-            --card-bg: #242736;
-            --border-color: #2d3044;
+            --primary-gradient: linear-gradient(135deg, #9945FF 0%, #14F195 100%);
+            --success-gradient: linear-gradient(135deg, #14F195 0%, #00D4AA 100%);
+            --dark-bg: #000000;
+            --card-bg: #0B0B0F;
+            --border-color: #1A1A24;
         }
 
         body {
             background: var(--dark-bg);
-            color: #e0e0e0;
+            color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
         }
@@ -46,7 +46,8 @@
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            border-left: 4px solid #38ef7d;
+            border-left: 4px solid #14F195;
+            color: #ffffff;
         }
 
         .card-header {
@@ -58,24 +59,28 @@
         }
 
         .form-control, .form-select {
-            background: #1a1d29;
+            background: #000000;
             border: 1px solid var(--border-color);
-            color: #e0e0e0;
+            color: #ffffff;
             border-radius: 10px;
             padding: 0.75rem;
         }
 
         .form-control:focus, .form-select:focus {
-            background: #1a1d29;
-            border-color: #38ef7d;
-            color: #e0e0e0;
-            box-shadow: 0 0 0 0.25rem rgba(56, 239, 125, 0.25);
+            background: #000000;
+            border-color: #9945FF;
+            color: #ffffff;
+            box-shadow: 0 0 0 0.25rem rgba(153, 69, 255, 0.25);
         }
 
         .form-label {
             font-weight: 600;
-            color: #b0b0b0;
+            color: #ffffff;
             margin-bottom: 0.5rem;
+        }
+
+        .text-muted {
+            color: #cccccc !important;
         }
 
         .btn-success {
@@ -89,12 +94,12 @@
 
         .btn-success:hover {
             transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(56, 239, 125, 0.4);
+            box-shadow: 0 5px 15px rgba(20, 241, 149, 0.5);
         }
 
         .btn-outline-secondary {
             border: 2px solid var(--border-color);
-            color: #e0e0e0;
+            color: #ffffff;
             font-weight: 600;
             padding: 0.75rem 2rem;
             border-radius: 10px;
@@ -102,7 +107,7 @@
 
         .btn-outline-secondary:hover {
             background: var(--border-color);
-            color: #fff;
+            color: #ffffff;
         }
 
         .page-title {
