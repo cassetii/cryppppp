@@ -1,0 +1,35 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Rules untuk collection 'whales'
+    match /whales/{whaleId} {
+      // Izinkan read (get, list) untuk semua user
+      allow read: if true;
+      
+      // Izinkan create untuk semua user
+      allow create: if true;
+      
+      // Izinkan update hanya jika data valid
+      allow update: if true;
+      
+      // Izinkan delete untuk semua user
+      allow delete: if true;
+    }
+    
+    // Rules untuk collection 'coins'
+    match /coins/{coinId} {
+      // Izinkan read (get, list) untuk semua user
+      allow read: if true;
+      
+      // Izinkan create untuk semua user
+      allow create: if true;
+      
+      // Izinkan update hanya jika data valid
+      allow update: if true;
+      
+      // Izinkan delete untuk semua user
+      allow delete: if true;
+    }
+  }
+}
