@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Tracker Pro - Dashboard</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #9945FF 0%, #14F195 100%);
+            --success-gradient: linear-gradient(135deg, #14F195 0%, #00D4AA 100%);
+            --danger-gradient: linear-gradient(135deg, #DC1FFF 0%, #9945FF 100%);
+            --dark-bg: #000000;
+            --card-bg: #0B0B0F;
+            --border-color: #1A1A24;
+            --accent-color: #9945FF;
+            --secondary-color: #14F195;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: var(--card-bg);
+            border-bottom: 2px solid var(--border-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            color: #ffffff;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(153, 69, 255, 0.4);
+        }
+
+        .card-header {
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 16px 16px 0 0 !important;
+            font-weight: 600;
+            padding: 1rem 1.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            border: none;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(153, 69, 255, 0.5);
+        }
+
+        .btn-success {
+            background: var(--success-gradient);
+            border: none;
+            font-weight: 600;
+        }
+
+        .btn-danger {
+            background: var(--danger-gradient);
+            border: none;
+            font-weight: 600;
+        }
+
+        .stats-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .text-muted {
+            color: #cccccc !important;
+        }
+
+        .stats-label {
+            color: #cccccc;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .badge-bsc {
+            background: linear-gradient(135deg, #f3ba2f 0%, #f0b90b 100%);
+            color: #000;
+        }
+
+        .badge-eth {
+            background: linear-gradient(135deg, #627eea 0%, #8c9eff 100%);
+        }
+
+        .badge-solana {
+            background: linear-gradient(135deg, #00d4aa 0%, #14f195 100%);
+            color: #000;
+        }
+
+        .badge-base {
+            background: linear-gradient(135deg, #0052ff 0%, #0066ff 100%);
+        }
+
+        .badge {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .card-title {
+            color: #ffffff;
+        }
+
+        .card-body {
+            color: #ffffff;
+        }
+
+        .contract-address {
+            font-family: 'Courier New', monospace;
+            background: #000000;
+            padding: 0.5rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            word-break: break-all;
+            color: #ffffff;
+        }
+
+        .action-buttons .btn {
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            margin: 0 0.2rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .coin-name {
+            font-weight: 700;
+            color: #14F195;
+        }
+
+        .coin-detail-card {
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .coin-detail-card:hover {
+            border-color: #9945FF;
+            box-shadow: 0 4px 20px rgba(153, 69, 255, 0.3);
+        }
+
+        .contract-address-section {
+            background: rgba(153, 69, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid #9945FF;
+        }
+
+        .coin-stats {
+            background: rgba(20, 241, 149, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid #14F195;
+        }
+
+        .stats-header {
+            color: #14F195;
+            font-size: 0.95rem;
+        }
+
+        .stat-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-label {
+            color: #cccccc;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-value {
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .notes-section {
+            background: rgba(20, 241, 149, 0.03);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid #14F195;
+        }
+
+        .notes-text {
+            color: #ffffff;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .nav-tabs {
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .nav-tabs .nav-link {
+            color: #cccccc;
+            border: none;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            border-radius: 0;
+        }
+
+        .nav-tabs .nav-link:hover {
+            color: #9945FF;
+            border: none;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: #fff;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid #9945FF;
+        }
+
+        .form-select {
+            background: #000000;
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+            border-radius: 10px;
+            padding: 0.5rem;
+        }
+
+        .form-select:focus {
+            background: #000000;
+            border-color: #9945FF;
+            color: #ffffff;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner-border {
+            color: #9945FF;
+        }
+
+        .entry-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            border: none;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.5);
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .entry-btn:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark navbar-expand-lg sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-currency-bitcoin"></i> Crypto Tracker Pro
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">
+                            <i class="bi bi-house"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="entry-whale.html">
+                            <i class="bi bi-water"></i> Entry Whale
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="entry-coin.html">
+                            <i class="bi bi-coin"></i> Entry Coin
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="portfolio.html">
+                            <i class="bi bi-wallet2"></i> Portfolio
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid py-4">
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="stats-card">
+                    <i class="bi bi-water" style="font-size: 2rem; color: #14F195;"></i>
+                    <div class="stats-number" id="totalWhales">0</div>
+                    <div class="stats-label">Total Whales</div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stats-card">
+                    <i class="bi bi-coin" style="font-size: 2rem; color: #9945FF;"></i>
+                    <div class="stats-number" id="totalCoins">0</div>
+                    <div class="stats-label">Total Coins</div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stats-card">
+                    <i class="bi bi-link-45deg" style="font-size: 2rem; color: #f3ba2f;"></i>
+                    <div class="stats-number" id="totalBSC">0</div>
+                    <div class="stats-label">BSC Chain</div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stats-card">
+                    <i class="bi bi-lightning-charge" style="font-size: 2rem; color: #00d4aa;"></i>
+                    <div class="stats-number" id="totalSolana">0</div>
+                    <div class="stats-label">Solana Chain</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <ul class="nav nav-tabs mb-4" id="mainTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="whales-tab" data-bs-toggle="tab" data-bs-target="#whales" type="button" role="tab">
+                    <i class="bi bi-water"></i> Whales Wallet
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="coins-tab" data-bs-toggle="tab" data-bs-target="#coins" type="button" role="tab">
+                    <i class="bi bi-coin"></i> Potential Coins
+                </button>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="mainTabsContent">
+            <!-- Whales Tab -->
+            <div class="tab-pane fade show active" id="whales" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="bi bi-list-ul"></i> Daftar Whale Wallets
+                    </div>
+                    <div class="card-body">
+                        <div id="whalesList">
+                            <div class="loading">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-2">Memuat data...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coins Tab -->
+            <div class="tab-pane fade" id="coins" role="tabpanel">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-list-ul"></i> Daftar Coins Potensial</span>
+                        <select class="form-select w-auto" id="filterChain">
+                            <option value="">Semua Chain</option>
+                            <option value="BSC">BSC</option>
+                            <option value="ETH">Ethereum</option>
+                            <option value="Solana">Solana</option>
+                            <option value="Base">Base</option>
+                        </select>
+                    </div>
+                    <div class="card-body">
+                        <div id="coinsList">
+                            <div class="loading">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-2">Memuat data...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Entry Button -->
+    <div class="dropdown">
+        <button class="entry-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-plus-lg"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="entry-whale.html"><i class="bi bi-water"></i> Tambah Whale</a></li>
+            <li><a class="dropdown-item" href="entry-coin.html"><i class="bi bi-coin"></i> Tambah Coin</a></li>
+        </ul>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, getDocs, deleteDoc, doc, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDb0XCzx13LR_lQ_W9zUGHdl4OCt5RmL0s",
+            authDomain: "cryptt-3f364.firebaseapp.com",
+            projectId: "cryptt-3f364",
+            storageBucket: "cryptt-3f364.firebasestorage.app",
+            messagingSenderId: "333311322801",
+            appId: "1:333311322801:web:7f02896dd29487a2fa5090",
+            measurementId: "G-KT5YB5E5PN"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let whales = [];
+        let coins = [];
+
+        // Load Data
+        async function loadData() {
+            try {
+                // Load Whales
+                const whalesQuery = query(collection(db, 'whales'), orderBy('dateAdded', 'desc'));
+                const whalesSnapshot = await getDocs(whalesQuery);
+                whales = whalesSnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                // Load Coins
+                const coinsQuery = query(collection(db, 'coins'), orderBy('dateAdded', 'desc'));
+                const coinsSnapshot = await getDocs(coinsQuery);
+                coins = coinsSnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                renderWhales();
+                renderCoins();
+                updateStats();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showAlert('danger', 'Gagal memuat data: ' + error.message);
+            }
+        }
+
+        // Render Whales
+        function renderWhales() {
+            const container = document.getElementById('whalesList');
+            
+            if (whales.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="bi bi-water"></i>
+                        <p>Belum ada whale wallet yang ditambahkan</p>
+                        <a href="entry-whale.html" class="btn btn-primary mt-3">
+                            <i class="bi bi-plus-lg"></i> Tambah Whale
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = whales.map(whale => `
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title mb-0">
+                                <i class="bi bi-wallet2"></i> ${whale.name}
+                            </h5>
+                            <span class="badge badge-${whale.chain.toLowerCase()}">${whale.chain}</span>
+                        </div>
+                        <div class="contract-address mb-2">
+                            <small><i class="bi bi-link-45deg"></i> ${whale.address}</small>
+                        </div>
+                        ${whale.notes ? `<p class="text-muted mb-2"><small>${whale.notes}</small></p>` : ''}
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="bi bi-calendar"></i> ${new Date(whale.dateAdded).toLocaleDateString('id-ID')}
+                            </small>
+                            <div class="action-buttons">
+                                <button class="btn btn-sm btn-primary" onclick="copyToClipboard('${whale.address}')">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteWhale('${whale.id}')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render Coins
+        function renderCoins() {
+            const container = document.getElementById('coinsList');
+            const filterChain = document.getElementById('filterChain').value;
+            
+            let filteredCoins = coins;
+            if (filterChain) {
+                filteredCoins = coins.filter(coin => coin.chain === filterChain);
+            }
+            
+            if (filteredCoins.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="bi bi-coin"></i>
+                        <p>Belum ada coin potensial yang ditambahkan</p>
+                        <a href="entry-coin.html" class="btn btn-primary mt-3">
+                            <i class="bi bi-plus-lg"></i> Tambah Coin
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = filteredCoins.map(coin => `
+                <div class="card mb-3 coin-detail-card">
+                    <div class="card-body p-4">
+                        <!-- Header Section -->
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <h4 class="coin-name mb-1">
+                                    <i class="bi bi-coin"></i> ${coin.name}
+                                </h4>
+                                <span class="badge badge-${coin.chain.toLowerCase()} me-2">#${coin.chain}</span>
+                                <span class="badge bg-info">${coin.potential}</span>
+                            </div>
+                            <div class="action-buttons">
+                                <button class="btn btn-sm btn-primary" onclick="copyToClipboard('${coin.contract}')">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteCoin('${coin.id}')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Contract Address -->
+                        <div class="contract-address-section mb-3">
+                            <small class="text-muted d-block mb-1">📝 Smart Contract</small>
+                            <div class="contract-address">
+                                ${coin.contract}
+                            </div>
+                        </div>
+
+                        <!-- Stats Section -->
+                        ${coin.stats ? `
+                        <div class="coin-stats mb-3">
+                            <div class="stats-header mb-2">
+                                <i class="bi bi-bar-chart-fill"></i> <strong>Stats</strong>
+                            </div>
+                            <div class="row g-2">
+                                ${coin.stats.price ? `
+                                <div class="col-6 col-md-3">
+                                    <div class="stat-item">
+                                        <small class="stat-label">USD</small>
+                                        <div class="stat-value ${coin.stats.priceChange >= 0 ? 'text-success' : 'text-danger'}">
+                                            $${coin.stats.price}
+                                            ${coin.stats.priceChange ? `<span class="ms-1">(${coin.stats.priceChange > 0 ? '+' : ''}${coin.stats.priceChange}%)</span>` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                                ` : ''}
+                                ${coin.stats.marketCap ? `
+                                <div class="col-6 col-md-3">
+                                    <div class="stat-item">
+                                        <small class="stat-label">MC</small>
+                                        <div class="stat-value">$${coin.stats.marketCap}</div>
+                                    </div>
+                                </div>
+                                ` : ''}
+                                ${coin.stats.volume ? `
+                                <div class="col-6 col-md-3">
+                                    <div class="stat-item">
+                                        <small class="stat-label">Vol</small>
+                                        <div class="stat-value">$${coin.stats.volume}</div>
+                                    </div>
+                                </div>
+                                ` : ''}
+                                ${coin.stats.liquidity ? `
+                                <div class="col-6 col-md-3">
+                                    <div class="stat-item">
+                                        <small class="stat-label">LP</small>
+                                        <div class="stat-value">$${coin.stats.liquidity}</div>
+                                    </div>
+                                </div>
+                                ` : ''}
+                                ${coin.stats.supply ? `
+                                <div class="col-6 col-md-3">
+                                    <div class="stat-item">
+                                        <small class="stat-label">Sup</small>
+                                        <div class="stat-value">${coin.stats.supply}</div>
+                                    </div>
+                                </div>
+                                ` : ''}
+                                ${coin.stats.holders ? `
+                                <div class="col-6 col-md-3">
+                                    <div class="stat-item">
+                                        <small class="stat-label">Holders</small>
+                                        <div class="stat-value"><i class="bi bi-people"></i> ${coin.stats.holders}</div>
+                                    </div>
+                                </div>
+                                ` : ''}
+                                ${coin.stats.ath ? `
+                                <div class="col-12 col-md-6">
+                                    <div class="stat-item">
+                                        <small class="stat-label">ATH</small>
+                                        <div class="stat-value text-warning">$${coin.stats.ath} <small class="text-muted">(${coin.stats.athChange})</small></div>
+                                    </div>
+                                </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                        ` : ''}
+
+                        <!-- Notes Section -->
+                        ${coin.notes ? `
+                        <div class="notes-section mb-3">
+                            <small class="text-muted d-block mb-1"><i class="bi bi-chat-left-text"></i> Catatan</small>
+                            <p class="mb-0 notes-text">${coin.notes}</p>
+                        </div>
+                        ` : ''}
+
+                        <!-- Footer -->
+                        <div class="d-flex justify-content-between align-items-center pt-2 border-top" style="border-color: var(--border-color) !important;">
+                            <small class="text-muted">
+                                <i class="bi bi-calendar"></i> ${new Date(coin.dateAdded).toLocaleDateString('id-ID')}
+                            </small>
+                            ${coin.age ? `
+                            <small class="text-muted">
+                                <i class="bi bi-clock"></i> ${coin.age}
+                            </small>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update Statistics
+        function updateStats() {
+            document.getElementById('totalWhales').textContent = whales.length;
+            document.getElementById('totalCoins').textContent = coins.length;
+            document.getElementById('totalBSC').textContent = 
+                whales.filter(w => w.chain === 'BSC').length + 
+                coins.filter(c => c.chain === 'BSC').length;
+            document.getElementById('totalSolana').textContent = 
+                whales.filter(w => w.chain === 'Solana').length + 
+                coins.filter(c => c.chain === 'Solana').length;
+        }
+
+        // Delete Whale
+        window.deleteWhale = async function(id) {
+            if (confirm('Yakin ingin menghapus whale wallet ini?')) {
+                try {
+                    await deleteDoc(doc(db, 'whales', id));
+                    showAlert('success', 'Whale wallet berhasil dihapus');
+                    loadData();
+                } catch (error) {
+                    showAlert('danger', 'Gagal menghapus: ' + error.message);
+                }
+            }
+        }
+
+        // Delete Coin
+        window.deleteCoin = async function(id) {
+            if (confirm('Yakin ingin menghapus coin ini?')) {
+                try {
+                    await deleteDoc(doc(db, 'coins', id));
+                    showAlert('success', 'Coin berhasil dihapus');
+                    loadData();
+                } catch (error) {
+                    showAlert('danger', 'Gagal menghapus: ' + error.message);
+                }
+            }
+        }
+
+        // Copy to Clipboard
+        window.copyToClipboard = function(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showAlert('success', 'Alamat berhasil disalin!');
+            });
+        }
+
+        // Show Alert
+        function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3`;
+            alertDiv.style.zIndex = '9999';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 3000);
+        }
+
+        // Filter Change
+        document.getElementById('filterChain').addEventListener('change', renderCoins);
+
+        // Initialize
+        loadData();
+    </script>
+</body>
+</html>
