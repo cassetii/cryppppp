@@ -13,17 +13,19 @@
     
     <style>
         :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-            --danger-gradient: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
-            --dark-bg: #FF6500;
-            --card-bg: #242736;
-            --border-color: #2d3044;
+            --primary-gradient: linear-gradient(135deg, #9945FF 0%, #14F195 100%);
+            --success-gradient: linear-gradient(135deg, #14F195 0%, #00D4AA 100%);
+            --danger-gradient: linear-gradient(135deg, #DC1FFF 0%, #9945FF 100%);
+            --dark-bg: #000000;
+            --card-bg: #0B0B0F;
+            --border-color: #1A1A24;
+            --accent-color: #9945FF;
+            --secondary-color: #14F195;
         }
 
         body {
             background: var(--dark-bg);
-            color: #e0e0e0;
+            color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
         }
@@ -49,11 +51,12 @@
             border-radius: 16px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             height: 100%;
+            color: #ffffff;
         }
 
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 8px 20px rgba(153, 69, 255, 0.4);
         }
 
         .card-header {
@@ -75,7 +78,7 @@
 
         .btn-primary:hover {
             transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 15px rgba(153, 69, 255, 0.5);
         }
 
         .btn-success {
@@ -107,8 +110,12 @@
             background-clip: text;
         }
 
+        .text-muted {
+            color: #cccccc !important;
+        }
+
         .stats-label {
-            color: #b0b0b0;
+            color: #cccccc;
             font-size: 0.9rem;
             margin-top: 0.5rem;
         }
@@ -138,13 +145,22 @@
             font-size: 0.85rem;
         }
 
+        .card-title {
+            color: #ffffff;
+        }
+
+        .card-body {
+            color: #ffffff;
+        }
+
         .contract-address {
             font-family: 'Courier New', monospace;
-            background: #1a1d29;
+            background: #000000;
             padding: 0.5rem;
             border-radius: 6px;
             font-size: 0.85rem;
             word-break: break-all;
+            color: #ffffff;
         }
 
         .action-buttons .btn {
@@ -167,7 +183,7 @@
 
         .coin-name {
             font-weight: 700;
-            color: #38ef7d;
+            color: #14F195;
         }
 
         .nav-tabs {
@@ -175,7 +191,7 @@
         }
 
         .nav-tabs .nav-link {
-            color: #b0b0b0;
+            color: #cccccc;
             border: none;
             padding: 1rem 2rem;
             font-weight: 600;
@@ -183,7 +199,7 @@
         }
 
         .nav-tabs .nav-link:hover {
-            color: #667eea;
+            color: #9945FF;
             border: none;
         }
 
@@ -191,21 +207,21 @@
             color: #fff;
             background: transparent;
             border: none;
-            border-bottom: 3px solid #667eea;
+            border-bottom: 3px solid #9945FF;
         }
 
         .form-select {
-            background: #1a1d29;
+            background: #000000;
             border: 1px solid var(--border-color);
-            color: #e0e0e0;
+            color: #ffffff;
             border-radius: 10px;
             padding: 0.5rem;
         }
 
         .form-select:focus {
-            background: #1a1d29;
-            border-color: #667eea;
-            color: #e0e0e0;
+            background: #000000;
+            border-color: #9945FF;
+            color: #ffffff;
         }
 
         .loading {
@@ -214,7 +230,7 @@
         }
 
         .spinner-border {
-            color: #667eea;
+            color: #9945FF;
         }
 
         .entry-btn {
@@ -277,14 +293,14 @@
         <div class="row mb-4">
             <div class="col-md-3 mb-3">
                 <div class="stats-card">
-                    <i class="bi bi-water" style="font-size: 2rem; color: #38ef7d;"></i>
+                    <i class="bi bi-water" style="font-size: 2rem; color: #14F195;"></i>
                     <div class="stats-number" id="totalWhales">0</div>
                     <div class="stats-label">Total Whales</div>
                 </div>
             </div>
             <div class="col-md-3 mb-3">
                 <div class="stats-card">
-                    <i class="bi bi-coin" style="font-size: 2rem; color: #667eea;"></i>
+                    <i class="bi bi-coin" style="font-size: 2rem; color: #9945FF;"></i>
                     <div class="stats-number" id="totalCoins">0</div>
                     <div class="stats-label">Total Coins</div>
                 </div>
